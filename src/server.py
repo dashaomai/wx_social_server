@@ -10,14 +10,20 @@ ALLOWED_EXTENSIONS = set(['json'])
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+def allowed_file(filename):
+    return '.' in filename and \
+       filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 @app.route('/social/moment', methods=['GET', 'POST'])
 def update_file():
     if request.method == 'POST':
         if 'file' not in request.files:
-            flash('No file part')
+            print('No file part')
             return redirect(request.url)
+
+        file = request.files['file']
         if file.filename == '':
-            flash('No selected file')
+            print('No selected file')
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
