@@ -138,12 +138,12 @@ def dict_2_str_and(dictin):
         tmplist.append(' ' + tmp + ' ')
     return ' AND '.join(tmplist)
 
-def main():
+def parse_sns(path):
     global mySQL, start_page, end_page, sleep_time, isproxy, proxy, header
     mySQL = MySQL()
-    mySQL._init_('127.0.0.1', 'root', '123321' ,'sns_test')
+    mySQL._init_('127.0.0.1', 'root', 'docker' ,'wx_social')
 
-    json_data = load('exported_sns.json')
+    json_data = load(path)
     for sns in json_data:
         media_list = sns.pop('mediaList')
         if len(media_list) > 0:
@@ -172,6 +172,3 @@ def main():
         mySQL.insertData('main_data', sns)
 
     print("Done.")
-
-if __name__ == "__main__":
-    main()

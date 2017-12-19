@@ -3,6 +3,7 @@
 
 import os
 from flask import Flask, request, redirect, url_for
+from writer import parse_sns
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = set(['json'])
@@ -27,7 +28,10 @@ def update_file():
             return redirect(request.url)
 
         if file and allowed_file(file.filename):
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], 'exported_sns.json'))
+            path = os.path.join(app.config['UPLOAD_FOLDER'], 'exported_sns.json')
+            file.save(os.path.join(path))
+            parse_sns(path)
+
             return '<!doctype html><title>File uploaded</title><h1>File uploaded</h1>'
     else:
         return '''
